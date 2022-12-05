@@ -8,6 +8,7 @@ public class Menu {
 		System.out.println("====================================");
 		System.out.println("Bem vindo ao sistema de aluguel de carros");
 		System.out.println("Para começar, digite seu cpf: ");
+		System.out.println("Para sair, digite 0");
 	}
 	
 	
