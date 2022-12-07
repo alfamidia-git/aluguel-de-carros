@@ -2,11 +2,16 @@ package menu;
 
 public class Menu {
 
-	
-	
-	public static void bemVindo() {
+	public static void tipoUsuario() {
 		System.out.println("====================================");
 		System.out.println("Bem vindo ao sistema de aluguel de carros");
+		System.out.println("1 - Cliente");
+		System.out.println("2 - Vendedor");
+		System.out.println("3 - Administrador");
+	}
+	
+	public static void bemVindo() {
+
 		System.out.println("Para começar, digite seu cpf: ");
 		System.out.println("Para sair, digite 0");
 	}

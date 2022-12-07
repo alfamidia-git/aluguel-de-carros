@@ -34,6 +34,12 @@ public class Cliente extends Pessoa{
 	public void setVeiculosAlugados(List<Veiculo> veiculosAlugados) {
 		this.veiculosAlugados = veiculosAlugados;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Cliente [tipo=" + tipo + ", veiculosAlugados=" + veiculosAlugados + "]";
+	}
 	
 	
 	

@@ -1,9 +1,11 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import model.Cliente;
 import model.Cliente.TipoPessoa;
+import model.Veiculo;
 import repository.ClienteRepository;
 
 public class ClienteService {
@@ -47,5 +49,18 @@ public class ClienteService {
 		Cliente cliente = new Cliente(nome, cpf, senha, endereco, tipoPessoa);
 		
 		return this.repository.salvar(cliente);
+	}
+
+	public boolean validarSenha(Cliente clienteLogado, String senha) {
+		return clienteLogado.getSenha().equals(senha);
+		
+	}
+	
+	public void adicionarVeiculo(Cliente cliente, Veiculo veiculo) {
+		if(cliente.getVeiculosAlugados() == null) {
+			cliente.setVeiculosAlugados(new ArrayList<>());
+		}
+		
+		cliente.getVeiculosAlugados().add(veiculo);
 	}
 }

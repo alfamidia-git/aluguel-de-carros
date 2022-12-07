@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import model.Cliente;
 import model.Vendedor;
+import model.Cliente.TipoPessoa;
 
 public class ClienteRepository implements Repository<Cliente>{
 
@@ -15,6 +16,8 @@ public class ClienteRepository implements Repository<Cliente>{
 	
 	public ClienteRepository() {
 		this.clientesRepository = new HashMap<>();
+		Cliente cliente = new Cliente("Marlon", "5050", "1234", "Rua 1", TipoPessoa.PF);
+		this.clientesRepository.put(cliente.getId(), cliente);
 	}
 	@Override
 	public List<Cliente> buscarTodos() {
