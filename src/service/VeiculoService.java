@@ -48,5 +48,12 @@ public class VeiculoService {
 		System.out.println("A entrega do veículo deverá ocorrer no dia: " + dataEntrega.format(formatter));
 		return veiculo;
 	}
+
+
+	public void devolverVeiculo(int veiculoEscolhido) {
+		Veiculo veiculo = this.repository.buscarPorId(veiculoEscolhido);		
+		veiculo.setStatus(Status.LIVRE);
+		
+	}
 	
 }

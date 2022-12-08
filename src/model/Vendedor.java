@@ -2,6 +2,7 @@ package model;
 
 public class Vendedor extends Pessoa{
 		
+		public static final double PORCENTAGEM_COMISSAO = 0.05; 
 		private double salario;
 		private double comissao;
 		
@@ -22,6 +23,13 @@ public class Vendedor extends Pessoa{
 		public void setComissao(double comissao) {
 			this.comissao = comissao;
 		}
+
+		@Override
+		public String toString() {
+			return this.id + " - " + this.nome;
+		}
+		
+		
 		
 		
 		

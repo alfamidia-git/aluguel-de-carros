@@ -1,6 +1,9 @@
 package service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.Cliente;
@@ -62,5 +65,29 @@ public class ClienteService {
 		}
 		
 		cliente.getVeiculosAlugados().add(veiculo);
+		
+		LocalDate dataAtual = LocalDate.now();
+		long quantidadeDias = veiculo.getDataEntrega().until(dataAtual, ChronoUnit.DAYS);
+		cliente.setDebitos(cliente.getDebitos() + (veiculo.getValor() * quantidadeDias));
+	}
+
+	public void mostrarVeiculosAlugados(Cliente clienteLogado) {
+		List<Veiculo> veiculos = clienteLogado.getVeiculosAlugados();
+		
+		for(Veiculo veiculo : veiculos) {
+			System.out.println(veiculo);
+		}
+		
+	}
+
+	public void removerVeiculo(Cliente clienteLogado,int veiculoId) {
+		
+		for(int i = 0; i < clienteLogado.getVeiculosAlugados().size(); i++) {
+			if(clienteLogado.getVeiculosAlugados().get(i).getId() == veiculoId) {
+				clienteLogado.getVeiculosAlugados().remove(i);
+				return;
+			}
+		}
+				
 	}
 }

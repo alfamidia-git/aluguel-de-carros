@@ -10,6 +10,8 @@ public class Cliente extends Pessoa{
 	
 	private List<Veiculo> veiculosAlugados;
 	
+	private double debitos;
+	
 	
 	
 	public Cliente(String nome, String cpf, String senha, String endereco, TipoPessoa tipo) {
@@ -38,7 +40,17 @@ public class Cliente extends Pessoa{
 
 	@Override
 	public String toString() {
-		return "Cliente [tipo=" + tipo + ", veiculosAlugados=" + veiculosAlugados + "]";
+		return "Cliente [tipo=" + tipo + ", veiculosAlugados=" + veiculosAlugados + ", debitos=" + debitos + "]";
+	}
+
+
+	public double getDebitos() {
+		return debitos;
+	}
+
+
+	public void setDebitos(double debitos) {
+		this.debitos = debitos;
 	}
 	
 	
