@@ -15,8 +15,8 @@ public class VendedorRepository implements Repository<Vendedor>{
 	
 	public VendedorRepository() {
 		this.vendedoresRepository = new HashMap<>();
-		this.salvar(new Vendedor("João", "5050", "1234", "Rua 1", 2500));
-		this.salvar(new Vendedor("Maria", "5050", "1234", "Rua 1", 2500));
+		this.salvar(new Vendedor("João", "6060", "1234", "Rua 1", 2500));
+		this.salvar(new Vendedor("Maria", "7070", "1234", "Rua 1", 2500));
 	}
 	
 	@Override

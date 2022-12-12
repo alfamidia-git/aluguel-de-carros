@@ -2,6 +2,7 @@ package service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +13,10 @@ import repository.VeiculoRepository;
 
 public class VeiculoService {
 	private VeiculoRepository repository;
+	
+	public VeiculoRepository getRepository() {
+		return this.repository;
+	}
 	
 	private DateTimeFormatter formatter;
 	private Scanner sc;
@@ -54,6 +59,18 @@ public class VeiculoService {
 		Veiculo veiculo = this.repository.buscarPorId(veiculoEscolhido);		
 		veiculo.setStatus(Status.LIVRE);
 		
+	}
+	
+	public void veiculosAlugados(){
+		
+		List<Veiculo> veiculos = this.repository.buscarTodos();
+		
+		for(Veiculo veiculo : veiculos) {
+			if(veiculo.getStatus() == Status.ALUGADO) {
+				System.out.println(veiculo);
+			}
+		}
+	
 	}
 	
 }

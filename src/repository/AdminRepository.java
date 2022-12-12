@@ -13,6 +13,7 @@ public class AdminRepository implements Repository<Admin>{
 	
 	public AdminRepository() {
 		this.adminRepository = new HashMap<>();
+		this.salvar(new Admin("Admin", "1010", "1234", "Rua 1"));
 	}
 	@Override
 	public List<Admin> buscarTodos() {

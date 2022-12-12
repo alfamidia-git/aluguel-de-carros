@@ -17,6 +17,10 @@ public class ClienteService {
 	
 	private Scanner sc;
 	
+	public ClienteRepository getRepository() {
+		return this.repository;
+	}
+	
 	public ClienteService(Scanner sc) {
 		this.repository = new ClienteRepository();
 		this.sc = sc;
@@ -52,11 +56,6 @@ public class ClienteService {
 		Cliente cliente = new Cliente(nome, cpf, senha, endereco, tipoPessoa);
 		
 		return this.repository.salvar(cliente);
-	}
-
-	public boolean validarSenha(Cliente clienteLogado, String senha) {
-		return clienteLogado.getSenha().equals(senha);
-		
 	}
 	
 	public void adicionarVeiculo(Cliente cliente, Veiculo veiculo) {

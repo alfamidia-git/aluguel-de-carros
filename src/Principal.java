@@ -3,8 +3,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import menu.Menu;
+import model.Admin;
 import model.Cliente;
 import model.Veiculo;
+import model.Vendedor;
+import service.AdminService;
 import service.ClienteService;
 import service.VeiculoService;
 import service.VendedorService;
@@ -18,6 +21,7 @@ public class Principal {
 		ClienteService clienteService = new ClienteService(sc);
 		VeiculoService veiculoService = new VeiculoService(sc, formatter);
 		VendedorService vendedorService = new VendedorService(sc);
+		AdminService adminService = new AdminService(sc, clienteService.getRepository(), vendedorService.getRepository(), veiculoService.getRepository());
 		
 		do {
 			Cliente clienteLogado = null;
@@ -42,7 +46,7 @@ public class Principal {
 						System.out.println("Digite sua senha: ");
 						String senha = sc.nextLine();
 
-						validouSenha = clienteService.validarSenha(clienteLogado, senha);
+						validouSenha = clienteLogado.validarSenha(senha);
 					}
 
 				} while (clienteLogado == null || !validouSenha);
@@ -77,17 +81,91 @@ public class Principal {
 				
 				break;
 			case 2:
+				Vendedor vendedorLogado = null;
+				do {
+					Menu.bemVindo();
+					String cpf = sc.next();
+					if (cpf.equals("0")) {
+						break;
+					}
+
+					vendedorLogado = vendedorService.buscarVendedorPorCpf(cpf);
+					if (vendedorLogado != null) {
+						sc.nextLine();
+						System.out.println("Digite sua senha: ");
+						String senha = sc.nextLine();
+
+						validouSenha = vendedorLogado.validarSenha(senha);
+					}else {
+						System.out.println("Vendedor não encontrado! Digite novamenteu seu cpf");
+					}
+
+				} while (vendedorLogado == null || !validouSenha);
+				
+				Menu.opcoesVendedor();
+				
+				int opcaoVendedor = sc.nextInt();
+				
+				if(opcaoVendedor == 1) {
+					veiculoService.veiculosAlugados();
+				}else if(opcaoVendedor == 2) {
+					vendedorService.mostrarSalarioAtual(vendedorLogado);
+				}else {
+					System.out.println("Opção inválida!!");
+				}
+				
+				Thread.sleep(3000);
 				break;
 			case 3:
+				Admin adminLogado = null;
+				do {
+					Menu.bemVindo();
+					String cpf = sc.next();
+					if (cpf.equals("0")) {
+						break;
+					}
+
+					adminLogado = adminService.buscarAdminPorCpf(cpf);
+					if (adminLogado != null) {
+						sc.nextLine();
+						System.out.println("Digite sua senha: ");
+						String senha = sc.nextLine();
+
+						validouSenha = adminLogado.validarSenha(senha);
+					}else {
+						System.out.println("Administrador não encontrado! Digite novamenteu seu cpf");
+					}
+
+				} while (adminLogado == null || !validouSenha);
+				
+				Menu.opcoesAdmin();
+				int opcaoAdmin = sc.nextInt();
+				
+				switch(opcaoAdmin) {
+				case 1:
+					adminService.cadastrarCliente();
+					break;
+				case 2:
+					adminService.removerCliente();
+					break;
+				case 3:
+					adminService.cadastrarUmVeiculo();
+					break;
+				case 4:
+					adminService.removerVeiculo();
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				}
+				Thread.sleep(1000);
 				break;
 			default:
 				System.out.println("Opção inválida!");
 
 			}
 
-			Menu.opcoesAdmin();
-
-			Menu.opcoesVendedor();
 		} while (continua);
 
 	}

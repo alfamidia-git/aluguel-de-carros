@@ -7,12 +7,18 @@ import java.util.Scanner;
 
 import model.Veiculo;
 import model.Vendedor;
+import repository.ClienteRepository;
 import repository.VendedorRepository;
 
 public class VendedorService {
-	private VendedorRepository repository;
+	private VendedorRepository repository;	
+	
+	public VendedorRepository getRepository() {
+		return this.repository;
+	}
 	
 	private Scanner sc;
+	
 	
 	public VendedorService(Scanner sc) {
 		this.repository = new VendedorRepository();
@@ -35,7 +41,22 @@ public class VendedorService {
 		
 		Vendedor vendedor = this.repository.buscarPorId(vendedorId);
 		vendedor.setComissao(vendedor.getComissao() + comissao);
+		this.repository.salvar(vendedor);
+	}
+
+	public Vendedor buscarVendedorPorCpf(String cpf) {
+		List<Vendedor> vendedores = this.repository.buscarTodos();
 		
-		System.out.println(vendedor.getComissao());
+		for(Vendedor vendedor : vendedores) {
+			if(vendedor.getCpf().equals(cpf)){
+				return vendedor;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void mostrarSalarioAtual(Vendedor vendedorLogado) {
+		System.out.println(vendedorLogado.getNome() + ", seu salário com a comissão atual é: " + (vendedorLogado.getComissao() + vendedorLogado.getSalario()));
 	}
 }
