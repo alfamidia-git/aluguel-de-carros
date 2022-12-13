@@ -10,6 +10,7 @@ import model.Cliente;
 import model.Cliente.TipoPessoa;
 import model.Veiculo;
 import model.Veiculo.Segmento;
+import model.Vendedor;
 import repository.AdminRepository;
 import repository.ClienteRepository;
 import repository.VeiculoRepository;
@@ -44,26 +45,41 @@ public class AdminService {
 		return null;
 	}
 
-	public void cadastrarCliente() {
+	public void cadastrarPessoa(boolean cliente) {
 		sc.nextLine();
-		System.out.println("Digite o nome do cliente: ");
+		System.out.println("Digite o nome: ");
 		String nome = sc.nextLine();
 		
-		System.out.println("Digite o cpf/cnpj do cliente: ");
+		System.out.println("Digite o cpf/cnpj: ");
 		String cpf = sc.nextLine();
 		
-		System.out.println("Digite o endereço do cliente");
+		System.out.println("Digite o endereço");
 		String endereco = sc.nextLine();
 		
-		System.out.println("Digite a senha do cliente");
+		System.out.println("Digite a senha");
 		String senha = sc.nextLine();
 		
-		System.out.println("Digite o tipo do cliente (PF ou PJ)");
-		String tipo = sc.nextLine();
-		
-		Cliente novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.valueOf(tipo));
-		
-		this.clienteRepository.salvar(novoCliente);
+		if(cliente) {
+			System.out.println("Digite o tipo do cliente (PF ou PJ)");
+			String tipo = sc.nextLine();
+			Cliente novoCliente = null;
+			try {
+				novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.valueOf(tipo));	
+			} catch(IllegalArgumentException e) {
+				System.out.println("Tipo inválido. Vamos adicionar como o padrão: Pessoa Física");
+				novoCliente = new Cliente(nome, cpf, senha, endereco, TipoPessoa.PF);	
+			}
+			
+			this.clienteRepository.salvar(novoCliente);
+		}else {
+			System.out.println("Digite o salário do vendedor");
+			double salario = sc.nextDouble();
+			
+			Vendedor novoVendedor = new Vendedor(nome, cpf, senha, endereco, salario);
+			
+			this.vendedorRepository.salvar(novoVendedor);
+		}
+
 	}
 	
 	public void removerCliente() {
@@ -102,9 +118,14 @@ public class AdminService {
 		
 		System.out.println("Digite o valor do veículo");
 		double valor = sc.nextDouble();
-		
-		
-		Veiculo veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.valueOf(segmento), valor);
+		Veiculo veiculo = null;
+		try {
+			veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.valueOf(segmento.toLowerCase()), valor);	
+		} catch(IllegalArgumentException e) {
+			System.out.println("Tipo inválido. Vamos adicionar como o padrão: Carro");
+			veiculo = new Veiculo(marca, modelo, placa, cor, ano, Segmento.CARRO, valor);	
+		}
+	
 		
 		this.veiculoRepository.salvar(veiculo);
 		
@@ -117,10 +138,25 @@ public class AdminService {
 			System.out.println(veiculo);
 		}
 		
-		System.out.println("Escolha qual cliente você deseja excluir");
+		System.out.println("Escolha qual veículo você deseja excluir");
 		
 		int opcao = sc.nextInt();
 		
 		this.veiculoRepository.excluirPorId(opcao);
+	}
+
+	public void removerVendedor() {
+		List<Vendedor> todosVendedores = this.vendedorRepository.buscarTodos();
+		
+		for(Vendedor vendedor : todosVendedores) {
+			System.out.println(vendedor);
+		}
+		
+		System.out.println("Escolha qual vendedor você deseja excluir");
+		
+		int opcao = sc.nextInt();
+		
+		this.vendedorRepository.excluirPorId(opcao);
+		
 	}
 }

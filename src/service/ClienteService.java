@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.VeiculoException;
 import model.Cliente;
 import model.Cliente.TipoPessoa;
 import model.Veiculo;
@@ -70,8 +71,12 @@ public class ClienteService {
 		cliente.setDebitos(cliente.getDebitos() + (veiculo.getValor() * quantidadeDias));
 	}
 
-	public void mostrarVeiculosAlugados(Cliente clienteLogado) {
+	public void mostrarVeiculosAlugados(Cliente clienteLogado) throws VeiculoException {
 		List<Veiculo> veiculos = clienteLogado.getVeiculosAlugados();
+		
+		if(veiculos == null) {
+			throw new VeiculoException("Sem veículos para devolver");
+		}
 		
 		for(Veiculo veiculo : veiculos) {
 			System.out.println(veiculo);

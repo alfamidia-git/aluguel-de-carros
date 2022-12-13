@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exception.VeiculoException;
 import model.Veiculo;
 import model.Veiculo.Status;
 import repository.ClienteRepository;
@@ -38,8 +39,12 @@ public class VeiculoService {
 		}
 	}
 	
-	public Veiculo alugaVeiculo(int idVeiculo, int diasAlugado) {
+	public Veiculo alugaVeiculo(int idVeiculo, int diasAlugado) throws VeiculoException {
 		Veiculo veiculo = this.repository.buscarPorId(idVeiculo);
+		
+		if(veiculo == null) {
+			throw new VeiculoException("Veículo não encontrado!");
+		}
 		
 		if(veiculo.getStatus() == Status.ALUGADO) {
 			System.out.println("Veículo alugado!!");
