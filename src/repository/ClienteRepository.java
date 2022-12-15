@@ -16,7 +16,7 @@ public class ClienteRepository implements Repository<Cliente>{
 	
 	public ClienteRepository() {
 		this.clientesRepository = new HashMap<>();
-		Cliente cliente = new Cliente("Marlon", "5050", "1234", "Rua 1", TipoPessoa.PF);
+		Cliente cliente = new Cliente("Marlon", "86332295015", "1234", "Rua 1", TipoPessoa.PF);
 		this.clientesRepository.put(cliente.getId(), cliente);
 	}
 	@Override

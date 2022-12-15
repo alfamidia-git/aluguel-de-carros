@@ -78,20 +78,19 @@ public class ClienteService {
 			throw new VeiculoException("Sem veículos para devolver");
 		}
 		
-		for(Veiculo veiculo : veiculos) {
-			System.out.println(veiculo);
-		}
+		veiculos.forEach(System.out::println);
 		
 	}
 
 	public void removerVeiculo(Cliente clienteLogado,int veiculoId) {
-		
-		for(int i = 0; i < clienteLogado.getVeiculosAlugados().size(); i++) {
-			if(clienteLogado.getVeiculosAlugados().get(i).getId() == veiculoId) {
-				clienteLogado.getVeiculosAlugados().remove(i);
-				return;
-			}
-		}
+		clienteLogado.getVeiculosAlugados().removeIf(v -> v.getId() == veiculoId);
+
+//		for(int i = 0; i < clienteLogado.getVeiculosAlugados().size(); i++) {
+//			if(clienteLogado.getVeiculosAlugados().get(i).getId() == veiculoId) {
+//				clienteLogado.getVeiculosAlugados().remove(i);
+//				return;
+//			}
+//		}
 				
 	}
 }

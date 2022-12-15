@@ -15,6 +15,7 @@ import repository.AdminRepository;
 import repository.ClienteRepository;
 import repository.VeiculoRepository;
 import repository.VendedorRepository;
+import util.Normaliza;
 
 public class AdminService {
 
@@ -34,15 +35,17 @@ public class AdminService {
 	}
 
 	public Admin buscarAdminPorCpf(String cpf) {
-		List<Admin> admins = this.repository.buscarTodos();
+		return this.repository.buscarTodos().stream().filter(a -> a.getCpf().equals(cpf)).findFirst().orElse(null);
 		
-		for(Admin admin : admins) {
-			if(admin.getCpf().equals(cpf)) {
-				return admin;
-			}
-		}
-		
-		return null;
+//		List<Admin> admins = this.repository.buscarTodos();
+//		
+//		for(Admin admin : admins) {
+//			if(admin.getCpf().equals(cpf)) {
+//				return admin;
+//			}
+//		}
+//		
+//		return null;
 	}
 
 	public void cadastrarPessoa(boolean cliente) {
@@ -96,7 +99,7 @@ public class AdminService {
 		this.clienteRepository.excluirPorId(opcao);
 	}
 
-	public void cadastrarUmVeiculo() {
+	public void cadastrarUmVeiculo() throws Exception {
 		sc.nextLine();
 		System.out.println("Digite a marca do veículo: ");
 		String marca = sc.nextLine();
@@ -106,6 +109,8 @@ public class AdminService {
 		
 		System.out.println("Digite a placa do veículo");
 		String placa = sc.nextLine();
+		
+		Normaliza.validaPlaca(placa);
 		
 		System.out.println("Digite a cor do veículo");
 		String cor = sc.nextLine();

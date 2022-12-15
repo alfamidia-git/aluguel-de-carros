@@ -14,6 +14,7 @@ import service.AdminService;
 import service.ClienteService;
 import service.VeiculoService;
 import service.VendedorService;
+import util.Normaliza;
 
 public class Principal {
 
@@ -44,6 +45,8 @@ public class Principal {
 						if (cpf.equals("0")) {
 							break;
 						}
+						
+						Normaliza.validaCPF(cpf);
 
 						clienteLogado = clienteService.buscarClientePorCpf(cpf);
 						if (clienteLogado != null) {
@@ -178,6 +181,9 @@ public class Principal {
 				System.out.println(e.getMessage());
 			} catch (InputMismatchException e) {
 				System.out.println("Tipo de entrada inválida!");
+				sc.nextLine();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
 		} while (continua);
