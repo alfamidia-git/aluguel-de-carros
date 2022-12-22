@@ -22,20 +22,8 @@ public class VeiculoRepository implements Repository<Veiculo>{
 	
 	public VeiculoRepository() {
 		this.veiculosRepository = new HashMap<>();
-		this.criaVeiculos();
 	}
 	
-	private void criaVeiculos() {
-		Veiculo carro1 = new Veiculo("Chevrolet","Onix", "IVP3455", "Branco", "2020", Segmento.CARRO, 150);
-		Veiculo carro2 = new Veiculo("Hyundai","HB20", "ISP3455", "Preto", "2015", Segmento.CARRO, 160);
-		Veiculo carro3 = new Veiculo("Ford","Fiesta", "IVL3455", "Cinza", "2015", Segmento.CARRO, 125);
-		Veiculo moto1 = new Veiculo("Honda","CG", "IVP3875", "Vermelha", "2020", Segmento.MOTO, 80);
-		
-		this.veiculosRepository.put(carro1.getId(), carro1);
-		this.veiculosRepository.put(carro2.getId(), carro2);
-		this.veiculosRepository.put(carro3.getId(), carro3);
-		this.veiculosRepository.put(moto1.getId(), moto1);
-	}
 	
 	@Override
 	public List<Veiculo> buscarTodos() {
@@ -88,7 +76,43 @@ public class VeiculoRepository implements Repository<Veiculo>{
 
 	@Override
 	public Veiculo buscarPorId(Integer id) {
-		return this.veiculosRepository.get(id);
+		
+		this.conexao = Conexao.getConexao();
+		String query = "select * from veiculo where id = " + id;
+		Veiculo veiculo = null;
+		
+		try {
+			PreparedStatement ps = this.conexao.prepareStatement(query);
+			ResultSet result = ps.executeQuery();
+			
+			
+			while(result.next()) {
+				String marca = result.getString("marca");
+				String modelo = result.getString("modelo");
+				String placa = result.getString("placa");
+				String cor = result.getString("cor");
+				Double valor = result.getDouble("valor");
+				String ano = result.getString("ano");
+				Segmento segmento = Segmento.valueOf(result.getString("segmento"));
+				Status status = Status.valueOf(result.getString("status_veiculo"));
+				
+				veiculo = new Veiculo(id, marca, modelo, placa, cor, ano, segmento, valor, status);
+				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getCause());
+		}finally{
+			if(this.conexao != null) {
+				try {
+					this.conexao.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return veiculo;
 	}
 
 	@Override
@@ -120,9 +144,34 @@ public class VeiculoRepository implements Repository<Veiculo>{
 	}
 
 	@Override
-	public Veiculo salvar(Veiculo t) {
-		this.veiculosRepository.put(t.getId(), t);
-		return t;
+	public Veiculo salvar(Veiculo veiculo) {
+		String query = "INSERT INTO veiculo (modelo, marca, placa, valor, cor, segmento, ano, status_veiculo)"
+				+ " values (?, ?, ?, ?, ?, ?, ?, ?)" ;
+		
+		this.conexao = Conexao.getConexao();
+		
+		try {
+			PreparedStatement ps = this.conexao.prepareStatement(query);
+			
+			ps.setString(1, veiculo.getModelo());
+			ps.setString(2, veiculo.getMarca());
+			ps.setString(3, veiculo.getPlaca());
+			ps.setDouble(4, veiculo.getValor());
+			ps.setString(5, veiculo.getCor());
+			ps.setString(6, veiculo.getSegmento().toString());
+			ps.setString(7, veiculo.getAno());
+			ps.setString(8, Status.LIVRE.toString());
+			
+			int excluiu	 = ps.executeUpdate();			
+			if(excluiu == 1) {
+				System.out.println("Criado com sucesso!");
+			}else {
+				System.out.println("Não foi possível criar o veículo");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return veiculo;
 	}
 
 }
